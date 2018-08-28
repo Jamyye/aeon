@@ -96,6 +96,7 @@ static const struct {
   // versions 2, 3, 4, 5 and 6 are skipped, in favor of reducing the cost of adopting the POW change and other consensus updates from Monero
   // version 7 starts from block 963500, which is on or around the 3rd of June, 2018. Fork time finalised on 2018-05-24.
   { 7, 963500, 0, 1527137212, 2000000000 },
+	
 };
 static const uint64_t mainnet_hard_fork_version_1_till = 963499;
 
@@ -112,6 +113,8 @@ static const struct {
   // versions 2, 3, 4, 5 and 6 are skipped, in favor of reducing the cost of adopting the POW change and other consensus updates from Monero
   // version 7 starts from block 44000, which is on or around the 24th of March, 2018.
   { 7, 44000, 0, 1521900000, 0 },
+//testnet fork, not sure if this is needed. Need to review
+ { 8, 50000, 0, 1523255371 }, 
 };
 static const uint64_t testnet_hard_fork_version_1_till = 43999;
 
