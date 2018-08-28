@@ -859,6 +859,7 @@ difficulty_type Blockchain::get_difficulty_for_next_block()
   } else {
     return next_difficulty_v2(timestamps, difficulties, target);
   }
+
   uint64_t last_diff_reset_height = m_hardfork->get_last_diff_reset_height(height);
   difficulty_type last_diff_reset_value = m_hardfork->get_last_diff_reset_value(height);
   difficulty_type diff = next_difficulty(timestamps, difficulties, target, height, last_diff_reset_height, last_diff_reset_value);
@@ -1047,49 +1048,8 @@ difficulty_type Blockchain::get_next_difficulty_for_alternative_chain(const std:
 
     // make sure we haven't accidentally grabbed too many blocks...maybe don't need this check?
     CHECK_AND_ASSERT_MES((alt_chain.size() + timestamps.size()) <= difficulty_blocks_count, false, "Internal error, alt_chain.size()[" << alt_chain.size() << "] + vtimestampsec.size()[" << timestamps.size() << "] NOT <= DIFFICULTY_WINDOW[]" << DIFFICULTY_BLOCKS_COUNT);
-     for (auto it : alt_chain)
-    {
-@@ -950,8 +971,8 @@ difficulty_type Blockchain::get_next_difficulty_for_alternative_chain(const std:
-  // and timestamps from it alone
-  else
-  {
-   timestamps.resize(static_cast<size_t>(difficulty_blocks_count));
-    cumulative_difficulties.resize(static_cast<size_t>(difficulty_blocks_count));
-    size_t count = 0;
-    size_t max_i = timestamps.size()-1;
-    // get difficulties and timestamps from most recent blocks in alt chain
-@@ -960,7 +981,7 @@ difficulty_type Blockchain::get_next_difficulty_for_alternative_chain(const std:
-      timestamps[max_i - count] = it->second.bl.timestamp;
-      cumulative_difficulties[max_i - count] = it->second.cumulative_difficulty;
-      count++;
-     
-      if(count >= difficulty_blocks_count)
-        break;
-    }
-  }
-@@ -969,8 +990,13 @@ difficulty_type Blockchain::get_next_difficulty_for_alternative_chain(const std:
-  size_t target = get_ideal_hard_fork_version(bei.height) < 2 ? DIFFICULTY_TARGET_V1 : DIFFICULTY_TARGET_V2;
-   // calculate the difficulty target for the block and return it
-  return next_difficulty(timestamps, cumulative_difficulties, target);
-  if (version == 7) {
-    return next_difficulty(timestamps, cumulative_difficulties, target);
-  } else {
-    return next_difficulty_v2(timestamps, cumulative_difficulties, target);
-  }
-}
- //------------------------------------------------------------------
-// This function does a sanity check on basic things that all miner
-// transactions have in common, such as:
-@@ -3123,7 +3149,8 @@ bool Blockchain::check_block_timestamp(std::vector<uint64_t>& timestamps, const
-bool Blockchain::check_block_timestamp(const block& b) const
-{
-  LOG_PRINT_L3("Blockchain::" << __func__);
- 
-  uint64_t cryptonote_block_future_time_limit = get_current_hard_fork_version() < 7 ? CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT : CRYPTONOTE_BLOCK_FUTURE_TIME_LIMIT_V2;
-  if(b.timestamp > get_adjusted_time() + cryptonote_block_future_time_limit)
-  {
-    MERROR_VER("Timestamp of block with id: " << get_block_hash(b) << ", " << b.timestamp << ", bigger than adjusted time + 2 hours");
-    return false;
+	
+	
 
     for (auto it : alt_chain)
     {
