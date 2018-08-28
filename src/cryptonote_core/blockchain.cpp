@@ -852,11 +852,9 @@ difficulty_type Blockchain::get_difficulty_for_next_block()
     m_difficulties = difficulties;
   }
   size_t target = DIFFICULTY_TARGET_V2;
-  if (version == 7) {
-    return next_difficulty(timestamps, difficulties, target);
-  } else {
-    return next_difficulty_v2(timestamps, difficulties, target);
-  }
+  
+  return next_difficulty_v2(timestamps, difficulties, target);
+  
 
   uint64_t last_diff_reset_height = m_hardfork->get_last_diff_reset_height(height);
   difficulty_type last_diff_reset_value = m_hardfork->get_last_diff_reset_value(height);
